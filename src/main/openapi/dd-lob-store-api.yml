@@ -118,8 +118,15 @@ components:
           type: string
           format: uri
           description: The download URL of the file
+        sha1Sum:
+          type: string
+          description: The SHA-1 hash of the file, used for verifying the integrity of the file after download
+        datastation:
+          type: string
+          description: The name of the datastation where the file is located. This is used to determine which credentials to use for downloading the file.
       required:
         - url
+        - datastation
 
     JobResponse:
       type: object
@@ -152,6 +159,8 @@ components:
         - TRANSFERRING
         - VERIFYING
         - DONE
+        - REJECTED
+        - FAILED
 
     LocationResponse:
       type: object
