@@ -44,5 +44,120 @@ paths:
                 example: |
                   LOB Store Running (v${project.version})
 
-#components:
-# Reusable schemas
+  /jobs:
+    post:
+      operationId: addJob
+      summary: Add a new job to the queue
+      requestBody:
+        description: Job request details
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobRequest'
+      responses:
+        '201':
+          description: Job created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobResponse'
+        '400':
+          description: Invalid request body
+
+  /jobs/{id}:
+    get:
+      operationId: getJobStatus
+      summary: Retrieve the status of a job
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the job
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobStatusInfo'
+        '404':
+          description: Job not found
+
+  /location/{hash}:
+    get:
+      operationId: getLocationByHash
+      summary: Retrieve the location of a file by its SHA-1 hash
+      description: This only works for files that have been completely processed.
+      parameters:
+        - name: hash
+          in: path
+          required: true
+          description: The SHA-1 hash of the file
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationResponse'
+        '404':
+          description: Location not found for the given hash
+
+components:
+  schemas:
+    JobRequest:
+      type: object
+      properties:
+        url:
+          type: string
+          format: uri
+          description: The download URL of the file
+      required:
+        - url
+
+    JobResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The unique identifier of the job
+      required:
+        - id
+
+    JobStatusInfo:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/JobStatus'
+      required:
+        - id
+        - status
+
+    JobStatus:
+      type: string
+      enum:
+        - PENDING
+        - DOWNLOADING
+        - PACKAGING
+        - TRANSFERRING
+        - VERIFYING
+        - DONE
+
+    LocationResponse:
+      type: object
+      properties:
+        location:
+          type: string
+          description: The storage location of the file
+      required:
+        - location
