@@ -30,7 +30,19 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
 
 paths:
-  # API endpoints
+  /:
+    get:
+      summary: Returns a description of the service.
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                description: a plain text, human readable description of the service
+                example: |
+                  LOB Store Running (v${project.version})
 
-components:
-  # Reusable schemas
+#components:
+# Reusable schemas
