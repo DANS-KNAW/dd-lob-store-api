@@ -44,36 +44,38 @@ paths:
                 example: |
                   LOB Store Running (v${project.version})
 
-  /jobs:
+  /transfers:
     post:
-      operationId: addJob
-      summary: Add a new job to the queue
+      operationId: addTransfer
+      summary: Add a new transfer to the queue
       requestBody:
-        description: Job request details
+        description: Transfer request details
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/JobRequest'
+              $ref: '#/components/schemas/TransferRequest'
       responses:
         '201':
-          description: Job created successfully
+          description: Transfer created successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/JobResponse'
+                $ref: '#/components/schemas/TransferResponse'
         '400':
           description: Invalid request body
+        '409':
+          description: Transfer already in progress for the given SHA-1
 
-  /jobs/{id}:
+  /transfers/{id}:
     get:
-      operationId: getJobStatus
-      summary: Retrieve the status of a job
+      operationId: getTransferStatus
+      summary: Retrieve the status of a transfer
       parameters:
         - name: id
           in: path
           required: true
-          description: The ID of the job
+          description: The ID of the transfer
           schema:
             type: string
             format: uuid
@@ -83,9 +85,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/JobStatusInfo'
+                $ref: '#/components/schemas/TransferStatusInfo'
         '404':
-          description: Job not found
+          description: Transfer not found
 
   /location/{hash}:
     get:
@@ -111,7 +113,7 @@ paths:
 
 components:
   schemas:
-    JobRequest:
+    TransferRequest:
       type: object
       properties:
         dataverseFileId:
@@ -126,31 +128,32 @@ components:
           description: The name of the datastation where the file is located. This is used to determine which credentials to use for downloading the file.
       required:
         - dataverseFileId
+        - sha1Sum
         - datastation
 
-    JobResponse:
+    TransferResponse:
       type: object
       properties:
         id:
           type: string
           format: uuid
-          description: The unique identifier of the job
+          description: The unique identifier of the transfer
       required:
         - id
 
-    JobStatusInfo:
+    TransferStatusInfo:
       type: object
       properties:
         id:
           type: string
           format: uuid
         status:
-          $ref: '#/components/schemas/JobStatus'
+          $ref: '#/components/schemas/TransferStatus'
       required:
         - id
         - status
 
-    JobStatus:
+    TransferStatus:
       type: string
       enum:
         - PENDING
