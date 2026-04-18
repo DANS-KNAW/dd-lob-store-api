@@ -157,9 +157,8 @@ components:
       type: string
       enum:
         - PENDING
-        - INSPECTING
         - INSPECTED
-        - DOWNLOADING
+        - DOWnLOADING
         - DOWNLOADED
         - PACKAGING
         - PACKAGED
