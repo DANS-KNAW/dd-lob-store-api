@@ -96,12 +96,18 @@ paths:
         '404':
           description: Transfer not found
 
-  /location/{hash}:
+  /locations/{store}/{hash}:
     get:
       operationId: getLocationByHash
       summary: Retrieve the location of a file by its SHA-1 hash
       description: This only works for files that have been completely processed.
       parameters:
+        - name: store
+          in: path
+          required: true
+          description: The name of the datastation whose LOB store to query
+          schema:
+            type: string
         - name: hash
           in: path
           required: true
@@ -179,8 +185,12 @@ components:
     LocationResponse:
       type: object
       properties:
-        location:
+        datastation:
           type: string
-          description: The storage location of the file
+          description: The LOB Store's Data Station
+        bucket:
+          type: string
+          description: The bucket where the file is stored
       required:
-        - location
+        - datastation
+        - bucket
