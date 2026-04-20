@@ -62,6 +62,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TransferResponse'
+        '303':
+          description: Transfer already exists and is already archived. See the location header for the status.
+          headers:
+            Location:
+              description: The URI of the existing transfer
+              schema:
+                type: string
         '400':
           description: Invalid request body
         '409':
@@ -158,12 +165,12 @@ components:
       enum:
         - PENDING
         - INSPECTED
-        - DOWnLOADING
+        - DOWNLOADING
         - DOWNLOADED
         - PACKAGING
         - PACKAGED
-        - TRANSFERRING
-        - TRANSFERRED
+        - UPLOADING
+        - UPLOADED
         - VERIFYING
         - DONE
         - REJECTED
