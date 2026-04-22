@@ -28,7 +28,7 @@
     <artifactId>dd-lob-store-api</artifactId>
     <version>0.1.1-SNAPSHOT</version>
 
-    <name>Dd Lob Store Api</name>
+    <name>DD LOB Store API</name>
     <url>https://github.com/DANS-KNAW/dd-lob-store-api</url>
     <description>Service for storing large objects in the Data Vault</description>
     <inceptionYear>2026</inceptionYear>
