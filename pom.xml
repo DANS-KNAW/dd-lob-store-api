@@ -26,7 +26,7 @@
     </parent>
 
     <artifactId>dd-lob-store-api</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1-SNAPSHOT</version>
 
     <name>Dd Lob Store Api</name>
     <url>https://github.com/DANS-KNAW/dd-lob-store-api</url>
@@ -35,7 +35,7 @@
 
     <scm>
         <developerConnection>scm:git:ssh://github.com/DANS-KNAW/dd-lob-store-api</developerConnection>
-        <tag>v0.1.0</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <build>
