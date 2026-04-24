@@ -46,33 +46,28 @@ paths:
 
   /transfers:
     post:
-      operationId: addTransfer
-      summary: Add a new transfer to the queue
+      operationId: addTransfers
+      summary: Add one or more new transfers to the queue
       requestBody:
-        description: Transfer request details
+        description: A list of transfer request details
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TransferRequest'
+              type: array
+              items:
+                $ref: '#/components/schemas/TransferRequest'
       responses:
-        '201':
-          description: Transfer created successfully
+        '207':
+          description: Multi-Status. Results for each transfer request in the same order as the input.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TransferResponse'
-        '303':
-          description: Transfer already exists and is already archived. See the location header for the status.
-          headers:
-            Location:
-              description: The URI of the existing transfer
-              schema:
-                type: string
+                type: array
+                items:
+                  $ref: '#/components/schemas/TransferResponseItem'
         '400':
           description: Invalid request body
-        '409':
-          description: Transfer already in progress for the given SHA-1
 
   /transfers/{id}:
     get:
@@ -153,6 +148,23 @@ components:
           description: The unique identifier of the transfer
       required:
         - id
+
+    TransferResponseItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The unique identifier of the transfer if it was created.
+        status:
+          type: integer
+          description: The HTTP status code for this specific item (e.g., 201, 303, 409).
+        location:
+          type: string
+          description: The URI of the existing transfer or location (if status is 303).
+        message:
+          type: string
+          description: Error message if the specific transfer failed (e.g., if status is 409).
 
     TransferStatusInfo:
       type: object
