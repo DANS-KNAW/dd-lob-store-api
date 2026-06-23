@@ -91,6 +91,39 @@ paths:
         '404':
           description: Transfer not found
 
+  /transfers/hash/{hash}:
+    get:
+      operationId: getTransfersByHash
+      summary: Retrieve a list of transfer requests by hash
+      parameters:
+        - name: hash
+          in: path
+          required: true
+          description: The SHA-1 hash of the file
+          schema:
+            type: string
+        - name: status
+          in: query
+          required: false
+          description: Filter by status
+          schema:
+            $ref: '#/components/schemas/TransferStatus'
+        - name: datastation
+          in: query
+          required: false
+          description: Filter by datastation
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TransferStatusInfo'
+
   /locations/{store}/{hash}:
     get:
       operationId: getLocationByHash
@@ -138,16 +171,6 @@ components:
         - dataverseFileId
         - sha1Sum
         - datastation
-
-    TransferResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: The unique identifier of the transfer
-      required:
-        - id
 
     TransferResponseItem:
       type: object
