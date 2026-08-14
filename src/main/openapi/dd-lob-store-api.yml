@@ -152,6 +152,32 @@ paths:
         '404':
           description: Location not found for the given hash
 
+  /datastations/{datastation}/flush-transfers:
+    post:
+      operationId: flushTransfers
+      summary: Flush pending transfers for a specific datastation
+      description: |
+        Forces a packaging task for downloaded files for the given datastation,
+        even if the total size is below the minimal bucket size threshold.
+        Padding will be added to ensure the package meets the minimal size requirements.
+
+        This operation should only be used when the service is not currently receiving transfers.
+        Otherwise, multiple packaging tasks may be created for the same files.
+      parameters:
+        - name: datastation
+          in: path
+          required: true
+          description: The name of the datastation to flush transfers for
+          schema:
+            type: string
+      responses:
+        '202':
+          description: Accepted. A packaging task was created.
+        '204':
+          description: No Content. No pending transfers were found for the datastation; no action was taken.
+        '503':
+          description: Service Unavailable. The service is currently unavailable or does not have the necessary resources to process the request; try again later.
+
 components:
   schemas:
     TransferRequest:
