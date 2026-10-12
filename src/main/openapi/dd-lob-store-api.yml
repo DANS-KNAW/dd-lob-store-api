@@ -38,12 +38,9 @@ paths:
         '200':
           description: OK
           content:
-            text/plain:
+            application/json:
               schema:
-                type: string
-                description: a plain text, human readable description of the service
-                example: |
-                  LOB Store Running (v${project.version})
+                $ref: '#/components/schemas/AppInfo'
 
   /transfers:
     post:
@@ -181,6 +178,13 @@ paths:
 
 components:
   schemas:
+    AppInfo:
+      type: object
+      properties:
+        name:
+          type: string
+        version:
+          type: string
     TransferRequest:
       type: object
       properties:
